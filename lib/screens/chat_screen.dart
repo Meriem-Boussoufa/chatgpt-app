@@ -1,5 +1,6 @@
 import 'package:chatgpt_app/constants/constants.dart';
 import 'package:chatgpt_app/services/assets_manager.dart';
+import 'package:chatgpt_app/widgets/chat_widget.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -36,7 +37,10 @@ class _ChatScreenState extends State<ChatScreen> {
             padding: const EdgeInsets.all(8.0),
             child: Image.asset(AssetsManager.openaiLogo),
           ),
-          title: const Text("ChatGPT"),
+          title: const ChatWidget(
+            msg: '',
+            chatIndex: 1,
+          ),
           actions: [
             IconButton(
                 onPressed: () {},

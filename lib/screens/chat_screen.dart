@@ -37,10 +37,7 @@ class _ChatScreenState extends State<ChatScreen> {
             padding: const EdgeInsets.all(8.0),
             child: Image.asset(AssetsManager.openaiLogo),
           ),
-          title: const ChatWidget(
-            msg: '',
-            chatIndex: 1,
-          ),
+          title: const Text('ChatGPT'),
           actions: [
             IconButton(
                 onPressed: () {},
@@ -57,7 +54,7 @@ class _ChatScreenState extends State<ChatScreen> {
               child: ListView.builder(
                 itemCount: 6,
                 itemBuilder: (context, index) {
-                  return const Text("Hello this is a text");
+                  return const ChatWidget(msg: '', chatIndex: 1);
                 },
               ),
             ),

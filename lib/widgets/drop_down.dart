@@ -3,6 +3,9 @@ import 'package:chatgpt_app/models/model.dart';
 import 'package:chatgpt_app/services/api_service.dart';
 import 'package:chatgpt_app/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/models_rpovider.dart';
 
 class ModelsDrowDownWidget extends StatefulWidget {
   const ModelsDrowDownWidget({super.key});
@@ -12,11 +15,13 @@ class ModelsDrowDownWidget extends StatefulWidget {
 }
 
 class _ModelsDrowDownWidgetState extends State<ModelsDrowDownWidget> {
-  String currentModel = "text-embedding-3-large";
+  String? currentModel;
   @override
   Widget build(BuildContext context) {
+    final modelsProvider = Provider.of<ModelsProvider>(context, listen: false);
+    currentModel = modelsProvider.getCurrentModel;
     return FutureBuilder<List<Model>>(
-        future: ApiService.getModels(),
+        future: modelsProvider.getAllModels(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Center(
@@ -43,6 +48,7 @@ class _ModelsDrowDownWidgetState extends State<ModelsDrowDownWidget> {
                         setState(() {
                           currentModel = value.toString();
                         });
+                        modelsProvider.setCurrentModel(value.toString());
                       }),
                 );
         });

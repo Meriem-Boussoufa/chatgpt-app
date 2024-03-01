@@ -20,6 +20,6 @@ class MyApp extends StatelessWidget {
             appBarTheme: AppBarTheme(
               color: cardColor,
             )),
-        home: ChatScreen());
+        home: const ChatScreen());
   }
 }

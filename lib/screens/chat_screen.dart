@@ -147,6 +147,7 @@ class _ChatScreenState extends State<ChatScreen> {
       log("error : $e");
     } finally {
       setState(() {
+        scrollListToEND();
         _isTyping = false;
       });
     }

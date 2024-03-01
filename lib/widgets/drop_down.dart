@@ -1,4 +1,7 @@
 import 'package:chatgpt_app/constants/constants.dart';
+import 'package:chatgpt_app/models/model.dart';
+import 'package:chatgpt_app/services/api_service.dart';
+import 'package:chatgpt_app/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 
 class ModelsDrowDownWidget extends StatefulWidget {
@@ -9,18 +12,39 @@ class ModelsDrowDownWidget extends StatefulWidget {
 }
 
 class _ModelsDrowDownWidgetState extends State<ModelsDrowDownWidget> {
-  String currentModel = "Model1";
+  String currentModel = "text-embedding-3-large";
   @override
   Widget build(BuildContext context) {
-    return DropdownButton(
-        iconEnabledColor: Colors.white,
-        dropdownColor: scaffoldBackgroundColor,
-        items: getModelsItem,
-        value: currentModel,
-        onChanged: (value) {
-          setState(() {
-            currentModel = value.toString();
-          });
+    return FutureBuilder<List<Model>>(
+        future: ApiService.getModels(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: TextWidget(label: snapshot.error.toString()),
+            );
+          }
+          return snapshot.data == null || snapshot.data!.isEmpty
+              ? const SizedBox.shrink()
+              : FittedBox(
+                  child: DropdownButton(
+                      iconEnabledColor:
+                          const Color.fromARGB(255, 197, 178, 178),
+                      dropdownColor: scaffoldBackgroundColor,
+                      items: List<DropdownMenuItem<String>>.generate(
+                          snapshot.data!.length,
+                          (index) => DropdownMenuItem(
+                              value: snapshot.data![index].id,
+                              child: TextWidget(
+                                label: snapshot.data![index].id,
+                                fontSize: 15,
+                              ))),
+                      value: currentModel,
+                      onChanged: (value) {
+                        setState(() {
+                          currentModel = value.toString();
+                        });
+                      }),
+                );
         });
   }
 }

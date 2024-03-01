@@ -1,13 +1,12 @@
 import 'dart:developer';
 import 'package:chatgpt_app/constants/constants.dart';
 import 'package:chatgpt_app/providers/models_rpovider.dart';
-import 'package:chatgpt_app/services/api_service.dart';
 import 'package:chatgpt_app/services/assets_manager.dart';
 import 'package:chatgpt_app/widgets/chat_widget.dart';
+import 'package:chatgpt_app/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
-import '../models/chat.dart';
 import '../providers/chats_provider.dart';
 import '../services/services.dart';
 
@@ -140,6 +139,15 @@ class _ChatScreenState extends State<ChatScreen> {
   Future<void> sendMessageFCT(
       {required ModelsProvider modelsProvider,
       required ChatProvider chatsProvider}) async {
+    if (textEditingController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: TextWidget(
+          label: 'Please type a message',
+        ),
+        backgroundColor: Colors.red,
+      ));
+      return;
+    }
     try {
       setState(() {
         _isTyping = true;
@@ -158,6 +166,13 @@ class _ChatScreenState extends State<ChatScreen> {
       // ));
       setState(() {});
     } catch (e) {
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: TextWidget(
+          label: e.toString(),
+        ),
+        backgroundColor: Colors.red,
+      ));
       log("error : $e");
     } finally {
       setState(() {

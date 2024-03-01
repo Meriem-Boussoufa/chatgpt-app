@@ -1,16 +1,14 @@
-# chatgpt_app
+This is a Flutter application replicating the functionality of ChatGPT using the OpenAI API. It allows users to engage in conversational interactions with an AI model trained on vast amounts of text data.
 
-A new Flutter project.
+### Features
+Chat Interface: Engage in conversations with the AI model in a chat-like interface.
+Real-time Responses: Receive real-time responses from the AI model.
 
-## Getting Started
+### Configuration
+To use the OpenAI API, you need to obtain an API key from OpenAI's platform: https://platform.openai.com/api-keys.
 
-This project is a starting point for a Flutter application.
+### Usable Links
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- https://pub.dev/packages/provider
+- https://platform.openai.com/docs/api-reference/making-requests
+- https://platform.openai.com/docs/api-reference/models

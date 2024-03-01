@@ -7,7 +7,7 @@ class Chat {
     required this.chatIndex,
   });
   factory Chat.fromJson(Map<String, dynamic> json) => Chat(
-        msg: json['msg'],
-        chatIndex: json['chatIndex'],
+        msg: json['message'],
+        chatIndex: json['index'],
       );
 }

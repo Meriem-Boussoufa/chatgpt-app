@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../models/model.dart';
 
 class ModelsProvider with ChangeNotifier {
-  String currentModel = "text-embedding-3-large";
+  String currentModel = "gpt-3.5-turbo";
 
   String get getCurrentModel {
     return currentModel;

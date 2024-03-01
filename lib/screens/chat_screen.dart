@@ -1,13 +1,12 @@
 import 'dart:developer';
-
 import 'package:chatgpt_app/constants/constants.dart';
+import 'package:chatgpt_app/providers/models_rpovider.dart';
 import 'package:chatgpt_app/services/api_service.dart';
 import 'package:chatgpt_app/services/assets_manager.dart';
 import 'package:chatgpt_app/widgets/chat_widget.dart';
 import 'package:flutter/material.dart';
-// ignore: depend_on_referenced_packages
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-
+import 'package:provider/provider.dart';
 import '../services/services.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -18,7 +17,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final bool _isTyping = true;
+  bool _isTyping = false;
   late TextEditingController textEditingController;
 
   @override
@@ -35,6 +34,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final modelsProvider = Provider.of<ModelsProvider>(context);
     return Scaffold(
         appBar: AppBar(
           elevation: 2,
@@ -73,38 +73,49 @@ class _ChatScreenState extends State<ChatScreen> {
                 color: Colors.white,
                 size: 18,
               ),
-              const SizedBox(height: 15),
-              Material(
-                color: cardColor,
-                child: Row(
-                  children: [
-                    Expanded(
-                        child: TextField(
-                      style: const TextStyle(color: Colors.white),
-                      controller: textEditingController,
-                      onSubmitted: (value) {},
-                      decoration: const InputDecoration.collapsed(
-                          hintText: "How can i help you ?",
-                          hintStyle: TextStyle(
-                            color: Colors.grey,
-                          )),
-                    )),
-                    IconButton(
-                        onPressed: () async {
-                          try {
-                            await ApiService.getModels();
-                          } catch (e) {
-                            log("error : $e");
-                          }
-                        },
-                        icon: const Icon(
-                          Icons.send,
-                          color: Colors.white,
-                        ))
-                  ],
-                ),
-              )
-            ]
+            ],
+            const SizedBox(height: 15),
+            Material(
+              color: cardColor,
+              child: Row(
+                children: [
+                  Expanded(
+                      child: TextField(
+                    style: const TextStyle(color: Colors.white),
+                    controller: textEditingController,
+                    onSubmitted: (value) {},
+                    decoration: const InputDecoration.collapsed(
+                        hintText: "How can i help you ?",
+                        hintStyle: TextStyle(
+                          color: Colors.grey,
+                        )),
+                  )),
+                  IconButton(
+                      onPressed: () async {
+                        try {
+                          setState(() {
+                            _isTyping = true;
+                          });
+                          log("Request has been sent");
+                          final lst = await ApiService.sendMessage(
+                            message: textEditingController.text,
+                            modelId: modelsProvider.getCurrentModel,
+                          );
+                        } catch (e) {
+                          log("error : $e");
+                        } finally {
+                          setState(() {
+                            _isTyping = false;
+                          });
+                        }
+                      },
+                      icon: const Icon(
+                        Icons.send,
+                        color: Colors.white,
+                      ))
+                ],
+              ),
+            )
           ],
         )));
   }
